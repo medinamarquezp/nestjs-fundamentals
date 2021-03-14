@@ -6,7 +6,9 @@ import {
   Post,
   Delete,
   Patch,
+  Query,
 } from '@nestjs/common';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 import { CoffeesService } from './coffees.service';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
@@ -17,17 +19,19 @@ export class CoffeesController {
   constructor(private readonly coffeService: CoffeesService) {}
 
   @Get()
-  getAll(): Coffee[] {
-    return this.coffeService.getAll();
+  async getAll(
+    @Query() paginationQuery: PaginationQueryDto,
+  ): Promise<Coffee[]> {
+    return await this.coffeService.getAll(paginationQuery);
   }
 
   @Get(':id')
-  getOne(@Param('id') id: number): Coffee {
-    return this.coffeService.getOne(id);
+  async getOne(@Param('id') id: number): Promise<Coffee> {
+    return await this.coffeService.getOne(id);
   }
 
   @Post()
-  create(@Body() createCoffeeDto: CreateCoffeeDto): Coffee[] {
+  create(@Body() createCoffeeDto: CreateCoffeeDto): Promise<Coffee> {
     return this.coffeService.create(createCoffeeDto);
   }
 
@@ -39,5 +43,10 @@ export class CoffeesController {
   @Delete(':id')
   delete(@Param('id') id: number) {
     return this.coffeService.delete(id);
+  }
+
+  @Patch(':id/recommend')
+  recommend(@Param('id') id: number) {
+    return this.coffeService.recommend(id);
   }
 }
