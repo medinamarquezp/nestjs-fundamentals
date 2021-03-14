@@ -15,7 +15,7 @@ import { CoffeesModule } from './coffees/coffees.module';
       password: 'pass123',
       database: 'postgres',
       autoLoadEntities: true,
-      synchronize: false,
+      synchronize: true,
     }),
   ],
   controllers: [AppController],

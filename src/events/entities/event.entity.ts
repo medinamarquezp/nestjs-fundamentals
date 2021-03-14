@@ -13,6 +13,6 @@ export class Event {
   @Column()
   name: string;
 
-  @Column('json')
-  payload: Record<string, any>;
+  @Column({ nullable: true })
+  payload: string;
 }

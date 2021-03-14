@@ -78,7 +78,7 @@ export class CoffeesService {
       const event = new Event();
       event.name = 'recomment_coffee';
       event.type = 'coffee';
-      event.payload = { coffeeId: coffee.id };
+      event.payload = JSON.stringify({ coffeeId: coffee.id });
       await queryRunner.manager.save(event);
 
       await queryRunner.commitTransaction();
