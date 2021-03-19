@@ -1,7 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Scope } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { CoffeesService } from 'src/coffees/coffees.service';
 
-@Injectable()
+@Injectable({ scope: Scope.TRANSIENT })
 export class CoffeeRatingService {
-  constructor(private readonly coffeesService: CoffeesService) {}
+  constructor(
+    private readonly coffeesService: CoffeesService,
+    private readonly configService: ConfigService,
+  ) {
+    const databaseName = this.configService.get<string>(
+      'DATABASE_NAME',
+      'no-name',
+    );
+    console.log(databaseName);
+  }
 }

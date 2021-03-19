@@ -8,6 +8,7 @@ import {
   Patch,
   Query,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 import { CoffeesService } from './coffees.service';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
@@ -16,7 +17,16 @@ import { Coffee } from './entities/coffee.entity';
 
 @Controller('coffees')
 export class CoffeesController {
-  constructor(private readonly coffeService: CoffeesService) {}
+  constructor(
+    private readonly coffeService: CoffeesService,
+    private readonly configService: ConfigService,
+  ) {
+    const databaseName = this.configService.get<string>(
+      'DATABASE_NAME',
+      'no-name',
+    );
+    console.log(databaseName);
+  }
 
   @Get()
   async getAll(
