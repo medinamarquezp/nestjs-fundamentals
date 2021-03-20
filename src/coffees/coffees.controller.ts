@@ -9,6 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { ApiNotFoundResponse, ApiRequestTimeoutResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { Protocol } from 'src/common/decorators/protocol.decorator';
 import { Public } from 'src/common/decorators/public.decorator';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
@@ -18,6 +19,7 @@ import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 import { Coffee } from './entities/coffee.entity';
 
+@ApiTags('Coffees')
 @Controller('coffees')
 export class CoffeesController {
   constructor(
@@ -41,6 +43,7 @@ export class CoffeesController {
     return await this.coffeService.getAll(paginationQuery);
   }
 
+  @ApiUnauthorizedResponse({ description: 'Unauthorized exception' })
   @Get(':id')
   async getOne(
     @Protocol('https') protocol: string,
@@ -50,11 +53,14 @@ export class CoffeesController {
     return await this.coffeService.getOne(id);
   }
 
+  @ApiUnauthorizedResponse({ description: 'Unauthorized exception' })
+  @ApiRequestTimeoutResponse({ description: 'Timeout exception' })
   @Post()
   create(@Body() createCoffeeDto: CreateCoffeeDto): Promise<Coffee> {
     return this.coffeService.create(createCoffeeDto);
   }
 
+  @ApiNotFoundResponse({ description: 'Not found exception' })
   @Patch(':id')
   update(@Param('id') id: number, @Body() updateCoffeeDto: UpdateCoffeeDto) {
     this.coffeService.update(id, updateCoffeeDto);
