@@ -9,7 +9,10 @@ import {
   Query,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { Protocol } from 'src/common/decorators/protocol.decorator';
+import { Public } from 'src/common/decorators/public.decorator';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
+import { ParseIntPipe } from 'src/common/pipes/parse-int.pipe';
 import { CoffeesService } from './coffees.service';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
@@ -28,15 +31,22 @@ export class CoffeesController {
     console.log(databaseName);
   }
 
+  @Public()
   @Get()
   async getAll(
     @Query() paginationQuery: PaginationQueryDto,
   ): Promise<Coffee[]> {
+    // Testing Timeout interceptor
+    // await new Promise((resolve) => setTimeout(resolve, 5000));
     return await this.coffeService.getAll(paginationQuery);
   }
 
   @Get(':id')
-  async getOne(@Param('id') id: number): Promise<Coffee> {
+  async getOne(
+    @Protocol('https') protocol: string,
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<Coffee> {
+    console.log(protocol);
     return await this.coffeService.getOne(id);
   }
 
