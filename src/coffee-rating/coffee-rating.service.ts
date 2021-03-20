@@ -1,6 +1,6 @@
 import { Injectable, Scope } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { CoffeesService } from 'src/coffees/coffees.service';
+import { CoffeesService } from '../coffees/coffees.service';
 
 @Injectable({ scope: Scope.TRANSIENT })
 export class CoffeeRatingService {

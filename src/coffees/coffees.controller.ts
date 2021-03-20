@@ -9,11 +9,16 @@ import {
   Query,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ApiNotFoundResponse, ApiRequestTimeoutResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
-import { Protocol } from 'src/common/decorators/protocol.decorator';
-import { Public } from 'src/common/decorators/public.decorator';
-import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
-import { ParseIntPipe } from 'src/common/pipes/parse-int.pipe';
+import {
+  ApiNotFoundResponse,
+  ApiRequestTimeoutResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
+import { Protocol } from '../common/decorators/protocol.decorator';
+import { Public } from '../common/decorators/public.decorator';
+import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
+import { ParseIntPipe } from '../common/pipes/parse-int.pipe';
 import { CoffeesService } from './coffees.service';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
@@ -63,7 +68,7 @@ export class CoffeesController {
   @ApiNotFoundResponse({ description: 'Not found exception' })
   @Patch(':id')
   update(@Param('id') id: number, @Body() updateCoffeeDto: UpdateCoffeeDto) {
-    this.coffeService.update(id, updateCoffeeDto);
+    return this.coffeService.update(id, updateCoffeeDto);
   }
 
   @Delete(':id')
