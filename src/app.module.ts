@@ -6,6 +6,8 @@ import { CoffeesModule } from './coffees/coffees.module';
 import { CoffeeRatingModule } from './coffee-rating/coffee-rating.module';
 import { ConfigModule } from '@nestjs/config';
 import { CommonModule } from './common/common.module';
+import { MongooseModule } from '@nestjs/mongoose';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   imports: [
@@ -22,11 +24,13 @@ import { CommonModule } from './common/common.module';
         synchronize: true,
       }),
     }),
+    MongooseModule.forRoot('mongodb://localhost:27017/nest-course'),
     ConfigModule.forRoot({
       ignoreEnvFile: process.env.NODE_ENV === 'production' ? true : false,
     }),
     CoffeeRatingModule,
     CommonModule,
+    CommentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
